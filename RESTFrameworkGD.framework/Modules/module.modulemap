@@ -1,0 +1,11 @@
+framework module RESTFrameworkGD {
+  umbrella header "RESTFrameworkGD.h"
+
+  export *
+  module * { export * }
+}
+
+module RESTFrameworkGD.Swift {
+    header "RESTFrameworkGD-Swift.h"
+    requires objc
+}

@@ -25,13 +25,6 @@ public struct DefaultDataResponse {
 
     /// Creates a `DefaultDataResponse` instance from the specified parameters.
     ///
-    /// - Parameters:
-    ///   - request:  The URL request sent to the server.
-    ///   - response: The server's response to the URL request.
-    ///   - data:     The data returned by the server.
-    ///   - error:    The error encountered while executing or validating the request.
-    ///   - timeline: The timeline of the complete lifecycle of the request. `Timeline()` by default.
-    ///   - metrics:  The task metrics containing the request / response statistics. `nil` by default.
     public init(
         request: URLRequest?,
         response: HTTPURLResponse?,
@@ -76,12 +69,6 @@ public struct DataResponse<Value> {
     var _metrics: AnyObject?
 
     /// Creates a `DataResponse` instance with the specified parameters derived from response serialization.
-    ///
-    /// - parameter request:  The URL request sent to the server.
-    /// - parameter response: The server's response to the URL request.
-    /// - parameter data:     The data returned by the server.
-    /// - parameter result:   The result of response serialization.
-    /// - parameter timeline: The timeline of the complete lifecycle of the `Request`. Defaults to `Timeline()`.
     ///
     /// - returns: The new `DataResponse` instance.
     public init(
@@ -129,13 +116,6 @@ extension DataResponse {
     /// Evaluates the specified closure when the result of this `DataResponse` is a success, passing the unwrapped
     /// result value as a parameter.
     ///
-    /// Use the `map` method with a closure that does not throw. For example:
-    ///
-    ///     let possibleData: DataResponse<Data> = ...
-    ///     let possibleInt = possibleData.map { $0.count }
-    ///
-    /// - parameter transform: A closure that takes the success value of the instance's result.
-    ///
     /// - returns: A `DataResponse` whose result wraps the value returned by the given closure. If this instance's
     ///            result is a failure, returns a response wrapping the same failure.
     public func map<T>(_ transform: (Value) -> T) -> DataResponse<T> {
@@ -154,15 +134,6 @@ extension DataResponse {
 
     /// Evaluates the given closure when the result of this `DataResponse` is a success, passing the unwrapped result
     /// value as a parameter.
-    ///
-    /// Use the `flatMap` method with a closure that may throw an error. For example:
-    ///
-    ///     let possibleData: DataResponse<Data> = ...
-    ///     let possibleObject = possibleData.flatMap {
-    ///         try JSONSerialization.jsonObject(with: $0)
-    ///     }
-    ///
-    /// - parameter transform: A closure that takes the success value of the instance's result.
     ///
     /// - returns: A success or failure `DataResponse` depending on the result of the given closure. If this instance's
     ///            result is a failure, returns the same failure.
@@ -210,15 +181,6 @@ public struct DefaultDownloadResponse {
 
     /// Creates a `DefaultDownloadResponse` instance from the specified parameters.
     ///
-    /// - Parameters:
-    ///   - request:        The URL request sent to the server.
-    ///   - response:       The server's response to the URL request.
-    ///   - temporaryURL:   The temporary destination URL of the data returned from the server.
-    ///   - destinationURL: The final destination URL of the data returned from the server if it was moved.
-    ///   - resumeData:     The resume data generated if the request was cancelled.
-    ///   - error:          The error encountered while executing or validating the request.
-    ///   - timeline:       The timeline of the complete lifecycle of the request. `Timeline()` by default.
-    ///   - metrics:        The task metrics containing the request / response statistics. `nil` by default.
     public init(
         request: URLRequest?,
         response: HTTPURLResponse?,
@@ -274,14 +236,6 @@ public struct DownloadResponse<Value> {
 
     /// Creates a `DownloadResponse` instance with the specified parameters derived from response serialization.
     ///
-    /// - parameter request:        The URL request sent to the server.
-    /// - parameter response:       The server's response to the URL request.
-    /// - parameter temporaryURL:   The temporary destination URL of the data returned from the server.
-    /// - parameter destinationURL: The final destination URL of the data returned from the server if it was moved.
-    /// - parameter resumeData:     The resume data generated if the request was cancelled.
-    /// - parameter result:         The result of response serialization.
-    /// - parameter timeline:       The timeline of the complete lifecycle of the `Request`. Defaults to `Timeline()`.
-    ///
     /// - returns: The new `DownloadResponse` instance.
     public init(
         request: URLRequest?,
@@ -335,13 +289,6 @@ extension DownloadResponse {
     /// Evaluates the given closure when the result of this `DownloadResponse` is a success, passing the unwrapped
     /// result value as a parameter.
     ///
-    /// Use the `map` method with a closure that does not throw. For example:
-    ///
-    ///     let possibleData: DownloadResponse<Data> = ...
-    ///     let possibleInt = possibleData.map { $0.count }
-    ///
-    /// - parameter transform: A closure that takes the success value of the instance's result.
-    ///
     /// - returns: A `DownloadResponse` whose result wraps the value returned by the given closure. If this instance's
     ///            result is a failure, returns a response wrapping the same failure.
     public func map<T>(_ transform: (Value) -> T) -> DownloadResponse<T> {
@@ -362,15 +309,6 @@ extension DownloadResponse {
 
     /// Evaluates the given closure when the result of this `DownloadResponse` is a success, passing the unwrapped
     /// result value as a parameter.
-    ///
-    /// Use the `flatMap` method with a closure that may throw an error. For example:
-    ///
-    ///     let possibleData: DownloadResponse<Data> = ...
-    ///     let possibleObject = possibleData.flatMap {
-    ///         try JSONSerialization.jsonObject(with: $0)
-    ///     }
-    ///
-    /// - parameter transform: A closure that takes the success value of the instance's result.
     ///
     /// - returns: A success or failure `DownloadResponse` depending on the result of the given closure. If this
     /// instance's result is a failure, returns the same failure.

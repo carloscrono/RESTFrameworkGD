@@ -243,7 +243,7 @@ extension Request {
         if let response = response, emptyDataStatusCodes.contains(response.statusCode) { return .success(Data()) }
 
         guard let validData = data else {
-            return .failure(AFError.responseSerializationFailed(reason: .inputDataNil))
+            return .failure(GDError.responseSerializationFailed(reason: .inputDataNil))
         }
 
         return .success(validData)
@@ -288,14 +288,14 @@ extension DownloadRequest {
             guard error == nil else { return .failure(error!) }
 
             guard let fileURL = fileURL else {
-                return .failure(AFError.responseSerializationFailed(reason: .inputFileNil))
+                return .failure(GDError.responseSerializationFailed(reason: .inputFileNil))
             }
 
             do {
                 let data = try Data(contentsOf: fileURL)
                 return Request.serializeResponseData(response: response, data: data, error: error)
             } catch {
-                return .failure(AFError.responseSerializationFailed(reason: .inputFileReadFailed(at: fileURL)))
+                return .failure(GDError.responseSerializationFailed(reason: .inputFileReadFailed(at: fileURL)))
             }
         }
     }
@@ -343,7 +343,7 @@ extension Request {
         if let response = response, emptyDataStatusCodes.contains(response.statusCode) { return .success("") }
 
         guard let validData = data else {
-            return .failure(AFError.responseSerializationFailed(reason: .inputDataNil))
+            return .failure(GDError.responseSerializationFailed(reason: .inputDataNil))
         }
 
         var convertedEncoding = encoding
@@ -359,7 +359,7 @@ extension Request {
         if let string = String(data: validData, encoding: actualEncoding) {
             return .success(string)
         } else {
-            return .failure(AFError.responseSerializationFailed(reason: .stringSerializationFailed(encoding: actualEncoding)))
+            return .failure(GDError.responseSerializationFailed(reason: .stringSerializationFailed(encoding: actualEncoding)))
         }
     }
 }
@@ -414,14 +414,14 @@ extension DownloadRequest {
             guard error == nil else { return .failure(error!) }
 
             guard let fileURL = fileURL else {
-                return .failure(AFError.responseSerializationFailed(reason: .inputFileNil))
+                return .failure(GDError.responseSerializationFailed(reason: .inputFileNil))
             }
 
             do {
                 let data = try Data(contentsOf: fileURL)
                 return Request.serializeResponseString(encoding: encoding, response: response, data: data, error: error)
             } catch {
-                return .failure(AFError.responseSerializationFailed(reason: .inputFileReadFailed(at: fileURL)))
+                return .failure(GDError.responseSerializationFailed(reason: .inputFileReadFailed(at: fileURL)))
             }
         }
     }
@@ -473,14 +473,14 @@ extension Request {
         if let response = response, emptyDataStatusCodes.contains(response.statusCode) { return .success(NSNull()) }
 
         guard let validData = data, validData.count > 0 else {
-            return .failure(AFError.responseSerializationFailed(reason: .inputDataNilOrZeroLength))
+            return .failure(GDError.responseSerializationFailed(reason: .inputDataNilOrZeroLength))
         }
 
         do {
             let json = try JSONSerialization.jsonObject(with: validData, options: options)
             return .success(json)
         } catch {
-            return .failure(AFError.responseSerializationFailed(reason: .jsonSerializationFailed(error: error)))
+            return .failure(GDError.responseSerializationFailed(reason: .jsonSerializationFailed(error: error)))
         }
     }
 }
@@ -537,14 +537,14 @@ extension DownloadRequest {
             guard error == nil else { return .failure(error!) }
 
             guard let fileURL = fileURL else {
-                return .failure(AFError.responseSerializationFailed(reason: .inputFileNil))
+                return .failure(GDError.responseSerializationFailed(reason: .inputFileNil))
             }
 
             do {
                 let data = try Data(contentsOf: fileURL)
                 return Request.serializeResponseJSON(options: options, response: response, data: data, error: error)
             } catch {
-                return .failure(AFError.responseSerializationFailed(reason: .inputFileReadFailed(at: fileURL)))
+                return .failure(GDError.responseSerializationFailed(reason: .inputFileReadFailed(at: fileURL)))
             }
         }
     }
@@ -594,14 +594,14 @@ extension Request {
         if let response = response, emptyDataStatusCodes.contains(response.statusCode) { return .success(NSNull()) }
 
         guard let validData = data, validData.count > 0 else {
-            return .failure(AFError.responseSerializationFailed(reason: .inputDataNilOrZeroLength))
+            return .failure(GDError.responseSerializationFailed(reason: .inputDataNilOrZeroLength))
         }
 
         do {
             let plist = try PropertyListSerialization.propertyList(from: validData, options: options, format: nil)
             return .success(plist)
         } catch {
-            return .failure(AFError.responseSerializationFailed(reason: .propertyListSerializationFailed(error: error)))
+            return .failure(GDError.responseSerializationFailed(reason: .propertyListSerializationFailed(error: error)))
         }
     }
 }
@@ -658,14 +658,14 @@ extension DownloadRequest {
             guard error == nil else { return .failure(error!) }
 
             guard let fileURL = fileURL else {
-                return .failure(AFError.responseSerializationFailed(reason: .inputFileNil))
+                return .failure(GDError.responseSerializationFailed(reason: .inputFileNil))
             }
 
             do {
                 let data = try Data(contentsOf: fileURL)
                 return Request.serializeResponsePropertyList(options: options, response: response, data: data, error: error)
             } catch {
-                return .failure(AFError.responseSerializationFailed(reason: .inputFileReadFailed(at: fileURL)))
+                return .failure(GDError.responseSerializationFailed(reason: .inputFileReadFailed(at: fileURL)))
             }
         }
     }

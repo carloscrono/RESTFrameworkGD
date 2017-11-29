@@ -86,21 +86,6 @@ extension Result: CustomDebugStringConvertible {
 extension Result {
     /// Creates a `Result` instance from the result of a closure.
     ///
-    /// A failure result is created when the closure throws, and a success result is created when the closure
-    /// succeeds without throwing an error.
-    ///
-    ///     func someString() throws -> String { ... }
-    ///
-    ///     let result = Result(value: {
-    ///         return try someString()
-    ///     })
-    ///
-    ///     // The type of result is Result<String>
-    ///
-    /// The trailing closure syntax is also supported:
-    ///
-    ///     let result = Result { try someString() }
-    ///
     /// - parameter value: The closure to execute and create the result for.
     public init(value: () throws -> Value) {
         do {
@@ -112,13 +97,6 @@ extension Result {
 
     /// Returns the success value, or throws the failure error.
     ///
-    ///     let possibleString: Result<String> = .success("success")
-    ///     try print(possibleString.unwrap())
-    ///     // Prints "success"
-    ///
-    ///     let noString: Result<String> = .failure(error)
-    ///     try print(noString.unwrap())
-    ///     // Throws error
     public func unwrap() throws -> Value {
         switch self {
         case .success(let value):
@@ -129,20 +107,6 @@ extension Result {
     }
 
     /// Evaluates the specified closure when the `Result` is a success, passing the unwrapped value as a parameter.
-    ///
-    /// Use the `map` method with a closure that does not throw. For example:
-    ///
-    ///     let possibleData: Result<Data> = .success(Data())
-    ///     let possibleInt = possibleData.map { $0.count }
-    ///     try print(possibleInt.unwrap())
-    ///     // Prints "0"
-    ///
-    ///     let noData: Result<Data> = .failure(error)
-    ///     let noInt = noData.map { $0.count }
-    ///     try print(noInt.unwrap())
-    ///     // Throws error
-    ///
-    /// - parameter transform: A closure that takes the success value of the `Result` instance.
     ///
     /// - returns: A `Result` containing the result of the given closure. If this instance is a failure, returns the
     ///            same failure.
@@ -156,15 +120,6 @@ extension Result {
     }
 
     /// Evaluates the specified closure when the `Result` is a success, passing the unwrapped value as a parameter.
-    ///
-    /// Use the `flatMap` method with a closure that may throw an error. For example:
-    ///
-    ///     let possibleData: Result<Data> = .success(Data(...))
-    ///     let possibleObject = possibleData.flatMap {
-    ///         try JSONSerialization.jsonObject(with: $0)
-    ///     }
-    ///
-    /// - parameter transform: A closure that takes the success value of the instance.
     ///
     /// - returns: A `Result` containing the result of the given closure. If this instance is a failure, returns the
     ///            same failure.
@@ -183,12 +138,6 @@ extension Result {
 
     /// Evaluates the specified closure when the `Result` is a failure, passing the unwrapped error as a parameter.
     ///
-    /// Use the `mapError` function with a closure that does not throw. For example:
-    ///
-    ///     let possibleData: Result<Data> = .failure(someError)
-    ///     let withMyError: Result<Data> = possibleData.mapError { MyError.error($0) }
-    ///
-    /// - Parameter transform: A closure that takes the error of the instance.
     /// - Returns: A `Result` instance containing the result of the transform. If this instance is a success, returns
     ///            the same instance.
     public func mapError<T: Error>(_ transform: (Error) -> T) -> Result {
@@ -201,15 +150,6 @@ extension Result {
     }
 
     /// Evaluates the specified closure when the `Result` is a failure, passing the unwrapped error as a parameter.
-    ///
-    /// Use the `flatMapError` function with a closure that may throw an error. For example:
-    ///
-    ///     let possibleData: Result<Data> = .success(Data(...))
-    ///     let possibleObject = possibleData.flatMapError {
-    ///         try someFailableFunction(taking: $0)
-    ///     }
-    ///
-    /// - Parameter transform: A throwing closure that takes the error of the instance.
     ///
     /// - Returns: A `Result` instance containing the result of the transform. If this instance is a success, returns
     ///            the same instance.
@@ -228,9 +168,6 @@ extension Result {
 
     /// Evaluates the specified closure when the `Result` is a success, passing the unwrapped value as a parameter.
     ///
-    /// Use the `withValue` function to evaluate the passed closure without modifying the `Result` instance.
-    ///
-    /// - Parameter closure: A closure that takes the success value of this instance.
     /// - Returns: This `Result` instance, unmodified.
     @discardableResult
     public func withValue(_ closure: (Value) -> Void) -> Result {
@@ -241,9 +178,6 @@ extension Result {
 
     /// Evaluates the specified closure when the `Result` is a failure, passing the unwrapped error as a parameter.
     ///
-    /// Use the `withError` function to evaluate the passed closure without modifying the `Result` instance.
-    ///
-    /// - Parameter closure: A closure that takes the success value of this instance.
     /// - Returns: This `Result` instance, unmodified.
     @discardableResult
     public func withError(_ closure: (Error) -> Void) -> Result {
@@ -254,9 +188,6 @@ extension Result {
 
     /// Evaluates the specified closure when the `Result` is a success.
     ///
-    /// Use the `ifSuccess` function to evaluate the passed closure without modifying the `Result` instance.
-    ///
-    /// - Parameter closure: A `Void` closure.
     /// - Returns: This `Result` instance, unmodified.
     @discardableResult
     public func ifSuccess(_ closure: () -> Void) -> Result {
@@ -267,9 +198,6 @@ extension Result {
 
     /// Evaluates the specified closure when the `Result` is a failure.
     ///
-    /// Use the `ifFailure` function to evaluate the passed closure without modifying the `Result` instance.
-    ///
-    /// - Parameter closure: A `Void` closure.
     /// - Returns: This `Result` instance, unmodified.
     @discardableResult
     public func ifFailure(_ closure: () -> Void) -> Result {

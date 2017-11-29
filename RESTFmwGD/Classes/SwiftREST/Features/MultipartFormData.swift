@@ -81,7 +81,7 @@ open class MultipartFormData {
     public let boundary: String
 
     private var bodyParts: [BodyPart]
-    private var bodyPartError: AFError?
+    private var bodyPartError: GDError?
     private let streamBufferSize: Int
 
     // MARK: - Lifecycle
@@ -322,7 +322,7 @@ open class MultipartFormData {
     /// time. This method should only be used when the encoded data will have a small memory footprint. For large data
     /// cases, please use the `writeEncodedDataToDisk(fileURL:completionHandler:)` method.
     ///
-    /// - throws: An `AFError` if encoding encounters an error.
+    /// - throws: An `GDError` if encoding encounters an error.
     ///
     /// - returns: The encoded `Data` if encoding is successful.
     public func encode() throws -> Data {
@@ -350,20 +350,20 @@ open class MultipartFormData {
     ///
     /// - parameter fileURL: The file URL to write the multipart form data into.
     ///
-    /// - throws: An `AFError` if encoding encounters an error.
+    /// - throws: An `GDError` if encoding encounters an error.
     public func writeEncodedData(to fileURL: URL) throws {
         if let bodyPartError = bodyPartError {
             throw bodyPartError
         }
 
         if FileManager.default.fileExists(atPath: fileURL.path) {
-            throw AFError.multipartEncodingFailed(reason: .outputStreamFileAlreadyExists(at: fileURL))
+            throw GDError.multipartEncodingFailed(reason: .outputStreamFileAlreadyExists(at: fileURL))
         } else if !fileURL.isFileURL {
-            throw AFError.multipartEncodingFailed(reason: .outputStreamURLInvalid(url: fileURL))
+            throw GDError.multipartEncodingFailed(reason: .outputStreamURLInvalid(url: fileURL))
         }
 
         guard let outputStream = OutputStream(url: fileURL, append: false) else {
-            throw AFError.multipartEncodingFailed(reason: .outputStreamCreationFailed(for: fileURL))
+            throw GDError.multipartEncodingFailed(reason: .outputStreamCreationFailed(for: fileURL))
         }
 
         outputStream.open()
@@ -421,7 +421,7 @@ open class MultipartFormData {
             let bytesRead = inputStream.read(&buffer, maxLength: streamBufferSize)
 
             if let error = inputStream.streamError {
-                throw AFError.multipartEncodingFailed(reason: .inputStreamReadFailed(error: error))
+                throw GDError.multipartEncodingFailed(reason: .inputStreamReadFailed(error: error))
             }
 
             if bytesRead > 0 {
@@ -464,7 +464,7 @@ open class MultipartFormData {
             let bytesRead = inputStream.read(&buffer, maxLength: streamBufferSize)
 
             if let streamError = inputStream.streamError {
-                throw AFError.multipartEncodingFailed(reason: .inputStreamReadFailed(error: streamError))
+                throw GDError.multipartEncodingFailed(reason: .inputStreamReadFailed(error: streamError))
             }
 
             if bytesRead > 0 {
@@ -501,7 +501,7 @@ open class MultipartFormData {
             let bytesWritten = outputStream.write(buffer, maxLength: bytesToWrite)
 
             if let error = outputStream.streamError {
-                throw AFError.multipartEncodingFailed(reason: .outputStreamWriteFailed(error: error))
+                throw GDError.multipartEncodingFailed(reason: .outputStreamWriteFailed(error: error))
             }
 
             bytesToWrite -= bytesWritten
@@ -553,8 +553,8 @@ open class MultipartFormData {
 
     // MARK: - Private - Errors
 
-    private func setBodyPartError(withReason reason: AFError.MultipartEncodingFailureReason) {
+    private func setBodyPartError(withReason reason: GDError.MultipartEncodingFailureReason) {
         guard bodyPartError == nil else { return }
-        bodyPartError = AFError.multipartEncodingFailed(reason: reason)
+        bodyPartError = GDError.multipartEncodingFailed(reason: reason)
     }
 }

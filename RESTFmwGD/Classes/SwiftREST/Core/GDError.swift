@@ -1,57 +1,23 @@
 //
-//  AFError.swift
+//  GDError.swift
 //
 //
 
 import Foundation
 
-/// `AFError` is the error type returned by SwiftREST. It encompasses a few different types of errors, each with
+/// `GDError` is the error type returned by SwiftREST. It encompasses a few different types of errors, each with
 /// their own associated reasons.
 ///
-/// - invalidURL:                  Returned when a `URLConvertible` type fails to create a valid `URL`.
-/// - parameterEncodingFailed:     Returned when a parameter encoding object throws an error during the encoding process.
-/// - multipartEncodingFailed:     Returned when some step in the multipart encoding process fails.
-/// - responseValidationFailed:    Returned when a `validate()` call fails.
-/// - responseSerializationFailed: Returned when a response serializer encounters an error in the serialization process.
-public enum AFError: Error {
-    /// The underlying reason the parameter encoding error occurred.
-    ///
-    /// - missingURL:                 The URL request did not have a URL to encode.
-    /// - jsonEncodingFailed:         JSON serialization failed with an underlying system error during the
-    ///                               encoding process.
-    /// - propertyListEncodingFailed: Property list serialization failed with an underlying system error during
-    ///                               encoding process.
+
+public enum GDError: Error {
+    //// The underlying reason the errors occurred:
+  
     public enum ParameterEncodingFailureReason {
         case missingURL
         case jsonEncodingFailed(error: Error)
         case propertyListEncodingFailed(error: Error)
     }
-
-    /// The underlying reason the multipart encoding error occurred.
-    ///
-    /// - bodyPartURLInvalid:                   The `fileURL` provided for reading an encodable body part isn't a
-    ///                                         file URL.
-    /// - bodyPartFilenameInvalid:              The filename of the `fileURL` provided has either an empty
-    ///                                         `lastPathComponent` or `pathExtension.
-    /// - bodyPartFileNotReachable:             The file at the `fileURL` provided was not reachable.
-    /// - bodyPartFileNotReachableWithError:    Attempting to check the reachability of the `fileURL` provided threw
-    ///                                         an error.
-    /// - bodyPartFileIsDirectory:              The file at the `fileURL` provided is actually a directory.
-    /// - bodyPartFileSizeNotAvailable:         The size of the file at the `fileURL` provided was not returned by
-    ///                                         the system.
-    /// - bodyPartFileSizeQueryFailedWithError: The attempt to find the size of the file at the `fileURL` provided
-    ///                                         threw an error.
-    /// - bodyPartInputStreamCreationFailed:    An `InputStream` could not be created for the provided `fileURL`.
-    /// - outputStreamCreationFailed:           An `OutputStream` could not be created when attempting to write the
-    ///                                         encoded data to disk.
-    /// - outputStreamFileAlreadyExists:        The encoded body data could not be writtent disk because a file
-    ///                                         already exists at the provided `fileURL`.
-    /// - outputStreamURLInvalid:               The `fileURL` provided for writing the encoded body data to disk is
-    ///                                         not a file URL.
-    /// - outputStreamWriteFailed:              The attempt to write the encoded body data to disk failed with an
-    ///                                         underlying error.
-    /// - inputStreamReadFailed:                The attempt to read an encoded body part `InputStream` failed with
-    ///                                         underlying system error.
+  
     public enum MultipartEncodingFailureReason {
         case bodyPartURLInvalid(url: URL)
         case bodyPartFilenameInvalid(in: URL)
@@ -70,15 +36,6 @@ public enum AFError: Error {
         case inputStreamReadFailed(error: Error)
     }
 
-    /// The underlying reason the response validation error occurred.
-    ///
-    /// - dataFileNil:             The data file containing the server response did not exist.
-    /// - dataFileReadFailed:      The data file containing the server response could not be read.
-    /// - missingContentType:      The response did not contain a `Content-Type` and the `acceptableContentTypes`
-    ///                            provided did not contain wildcard type.
-    /// - unacceptableContentType: The response `Content-Type` did not match any type in the provided
-    ///                            `acceptableContentTypes`.
-    /// - unacceptableStatusCode:  The response status code was not acceptable.
     public enum ResponseValidationFailureReason {
         case dataFileNil
         case dataFileReadFailed(at: URL)
@@ -87,15 +44,6 @@ public enum AFError: Error {
         case unacceptableStatusCode(code: Int)
     }
 
-    /// The underlying reason the response serialization error occurred.
-    ///
-    /// - inputDataNil:                    The server response contained no data.
-    /// - inputDataNilOrZeroLength:        The server response contained no data or the data was zero length.
-    /// - inputFileNil:                    The file containing the server response did not exist.
-    /// - inputFileReadFailed:             The file containing the server response could not be read.
-    /// - stringSerializationFailed:       String serialization failed using the provided `String.Encoding`.
-    /// - jsonSerializationFailed:         JSON serialization failed with an underlying system error.
-    /// - propertyListSerializationFailed: Property list serialization failed with an underlying system error.
     public enum ResponseSerializationFailureReason {
         case inputDataNil
         case inputDataNilOrZeroLength
@@ -125,35 +73,35 @@ extension Error {
 
 // MARK: - Error Booleans
 
-extension AFError {
-    /// Returns whether the AFError is an invalid URL error.
+extension GDError {
+    /// Returns whether the GDError is an invalid URL error.
     public var isInvalidURLError: Bool {
         if case .invalidURL = self { return true }
         return false
     }
 
-    /// Returns whether the AFError is a parameter encoding error. When `true`, the `underlyingError` property will
+    /// Returns whether the GDError is a parameter encoding error. When `true`, the `underlyingError` property will
     /// contain the associated value.
     public var isParameterEncodingError: Bool {
         if case .parameterEncodingFailed = self { return true }
         return false
     }
 
-    /// Returns whether the AFError is a multipart encoding error. When `true`, the `url` and `underlyingError` properties
+    /// Returns whether the GDError is a multipart encoding error. When `true`, the `url` and `underlyingError` properties
     /// will contain the associated values.
     public var isMultipartEncodingError: Bool {
         if case .multipartEncodingFailed = self { return true }
         return false
     }
 
-    /// Returns whether the `AFError` is a response validation error. When `true`, the `acceptableContentTypes`,
+    /// Returns whether the `GDError` is a response validation error. When `true`, the `acceptableContentTypes`,
     /// `responseContentType`, and `responseCode` properties will contain the associated values.
     public var isResponseValidationError: Bool {
         if case .responseValidationFailed = self { return true }
         return false
     }
 
-    /// Returns whether the `AFError` is a response serialization error. When `true`, the `failedStringEncoding` and
+    /// Returns whether the `GDError` is a response serialization error. When `true`, the `failedStringEncoding` and
     /// `underlyingError` properties will contain the associated values.
     public var isResponseSerializationError: Bool {
         if case .responseSerializationFailed = self { return true }
@@ -163,7 +111,7 @@ extension AFError {
 
 // MARK: - Convenience Properties
 
-extension AFError {
+extension GDError {
     /// The `URLConvertible` associated with the error.
     public var urlConvertible: URLConvertible? {
         switch self {
@@ -240,7 +188,7 @@ extension AFError {
     }
 }
 
-extension AFError.ParameterEncodingFailureReason {
+extension GDError.ParameterEncodingFailureReason {
     var underlyingError: Error? {
         switch self {
         case .jsonEncodingFailed(let error), .propertyListEncodingFailed(let error):
@@ -251,7 +199,7 @@ extension AFError.ParameterEncodingFailureReason {
     }
 }
 
-extension AFError.MultipartEncodingFailureReason {
+extension GDError.MultipartEncodingFailureReason {
     var url: URL? {
         switch self {
         case .bodyPartURLInvalid(let url), .bodyPartFilenameInvalid(let url), .bodyPartFileNotReachable(let url),
@@ -276,7 +224,7 @@ extension AFError.MultipartEncodingFailureReason {
     }
 }
 
-extension AFError.ResponseValidationFailureReason {
+extension GDError.ResponseValidationFailureReason {
     var acceptableContentTypes: [String]? {
         switch self {
         case .missingContentType(let types), .unacceptableContentType(let types, _):
@@ -305,7 +253,7 @@ extension AFError.ResponseValidationFailureReason {
     }
 }
 
-extension AFError.ResponseSerializationFailureReason {
+extension GDError.ResponseSerializationFailureReason {
     var failedStringEncoding: String.Encoding? {
         switch self {
         case .stringSerializationFailed(let encoding):
@@ -327,7 +275,7 @@ extension AFError.ResponseSerializationFailureReason {
 
 // MARK: - Error Descriptions
 
-extension AFError: LocalizedError {
+extension GDError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .invalidURL(let url):
@@ -344,7 +292,7 @@ extension AFError: LocalizedError {
     }
 }
 
-extension AFError.ParameterEncodingFailureReason {
+extension GDError.ParameterEncodingFailureReason {
     var localizedDescription: String {
         switch self {
         case .missingURL:
@@ -357,7 +305,7 @@ extension AFError.ParameterEncodingFailureReason {
     }
 }
 
-extension AFError.MultipartEncodingFailureReason {
+extension GDError.MultipartEncodingFailureReason {
     var localizedDescription: String {
         switch self {
         case .bodyPartURLInvalid(let url):
@@ -396,7 +344,7 @@ extension AFError.MultipartEncodingFailureReason {
     }
 }
 
-extension AFError.ResponseSerializationFailureReason {
+extension GDError.ResponseSerializationFailureReason {
     var localizedDescription: String {
         switch self {
         case .inputDataNil:
@@ -417,7 +365,7 @@ extension AFError.ResponseSerializationFailureReason {
     }
 }
 
-extension AFError.ResponseValidationFailureReason {
+extension GDError.ResponseValidationFailureReason {
     var localizedDescription: String {
         switch self {
         case .dataFileNil:

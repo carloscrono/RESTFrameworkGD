@@ -8,10 +8,6 @@ import Foundation
 public protocol RequestAdapter {
     /// Inspects and adapts the specified `URLRequest` in some manner if necessary and returns the result.
     ///
-    /// - parameter urlRequest: The URL request to adapt.
-    ///
-    /// - throws: An `Error` if the adaptation encounters an error.
-    ///
     /// - returns: The adapted `URLRequest`.
     func adapt(_ urlRequest: URLRequest) throws -> URLRequest
 }
@@ -26,14 +22,6 @@ public typealias RequestRetryCompletion = (_ shouldRetry: Bool, _ timeDelay: Tim
 public protocol RequestRetrier {
     /// Determines whether the `Request` should be retried by calling the `completion` closure.
     ///
-    /// This operation is fully asynchronous. Any amount of time can be taken to determine whether the request needs
-    /// to be retried. The one requirement is that the completion closure is called to ensure the request is properly
-    /// cleaned up after.
-    ///
-    /// - parameter manager:    The session manager the request was executed on.
-    /// - parameter request:    The request that failed due to the encountered error.
-    /// - parameter error:      The error encountered when executing the request.
-    /// - parameter completion: The completion closure to be executed when retry decision has been determined.
     func should(_ manager: SessionManager, retry request: Request, with error: Error, completion: @escaping RequestRetryCompletion)
 }
 
@@ -131,10 +119,6 @@ open class Request {
 
     /// Associates an HTTP Basic credential with the request.
     ///
-    /// - parameter user:        The user.
-    /// - parameter password:    The password.
-    /// - parameter persistence: The URL credential persistence. `.ForSession` by default.
-    ///
     /// - returns: The request.
     @discardableResult
     open func authenticate(
@@ -159,9 +143,6 @@ open class Request {
     }
 
     /// Returns a base64 encoded basic authentication credential as an authorization header tuple.
-    ///
-    /// - parameter user:     The user.
-    /// - parameter password: The password.
     ///
     /// - returns: A tuple with Authorization header and credential value if encoding succeeds, `nil` otherwise.
     open static func authorizationHeader(user: String, password: String) -> (key: String, value: String)? {
@@ -368,12 +349,6 @@ open class DataRequest: Request {
 
     /// Sets a closure to be called periodically during the lifecycle of the request as data is read from the server.
     ///
-    /// This closure returns the bytes most recently received from the server, not including data from previous calls.
-    /// If this closure is set, data will only be available within this closure, and will not be saved elsewhere. It is
-    /// also important to note that the server data in any `Response` object will be `nil`.
-    ///
-    /// - parameter closure: The code to be executed periodically during the lifecycle of the request.
-    ///
     /// - returns: The request.
     @discardableResult
     open func stream(closure: ((Data) -> Void)? = nil) -> Self {
@@ -384,9 +359,6 @@ open class DataRequest: Request {
     // MARK: Progress
 
     /// Sets a closure to be called periodically during the lifecycle of the `Request` as data is read from the server.
-    ///
-    /// - parameter queue:   The dispatch queue to execute the closure on.
-    /// - parameter closure: The code to be executed periodically as data is read from the server.
     ///
     /// - returns: The request.
     @discardableResult
@@ -417,18 +389,12 @@ open class DownloadRequest: Request {
 
         /// Creates a `DownloadFileDestinationOptions` instance with the specified raw value.
         ///
-        /// - parameter rawValue: The raw bitmask value for the option.
-        ///
         /// - returns: A new log level instance.
         public init(rawValue: UInt) {
             self.rawValue = rawValue
         }
     }
 
-    /// A closure executed once a download request has successfully completed in order to determine where to move the
-    /// temporary file written to during the download process. The closure takes two arguments: the temporary file URL
-    /// and the URL response, and returns a two arguments: the file URL where the temporary file should be moved and
-    /// the options defining how the file should be moved.
     public typealias DownloadFileDestination = (
         _ temporaryURL: URL,
         _ response: HTTPURLResponse)
@@ -495,9 +461,6 @@ open class DownloadRequest: Request {
 
     /// Sets a closure to be called periodically during the lifecycle of the `Request` as data is read from the server.
     ///
-    /// - parameter queue:   The dispatch queue to execute the closure on.
-    /// - parameter closure: The code to be executed periodically as data is read from the server.
-    ///
     /// - returns: The request.
     @discardableResult
     open func downloadProgress(queue: DispatchQueue = DispatchQueue.main, closure: @escaping ProgressHandler) -> Self {
@@ -509,9 +472,6 @@ open class DownloadRequest: Request {
 
     /// Creates a download file destination closure which uses the default file manager to move the temporary file to a
     /// file URL in the first available directory with the specified search path directory and search path domain mask.
-    ///
-    /// - parameter directory: The search path directory. `.DocumentDirectory` by default.
-    /// - parameter domain:    The search path domain mask. `.UserDomainMask` by default.
     ///
     /// - returns: A download file destination closure.
     open class func suggestedDownloadDestination(
@@ -589,12 +549,6 @@ open class UploadRequest: DataRequest {
 
     /// Sets a closure to be called periodically during the lifecycle of the `UploadRequest` as data is sent to
     /// the server.
-    ///
-    /// After the data is sent to the server, the `progress(queue:closure:)` APIs can be used to monitor the progress
-    /// of data being read from the server.
-    ///
-    /// - parameter queue:   The dispatch queue to execute the closure on.
-    /// - parameter closure: The code to be executed periodically as data is sent to the server.
     ///
     /// - returns: The request.
     @discardableResult

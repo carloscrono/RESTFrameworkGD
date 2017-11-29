@@ -8,7 +8,7 @@ extension Request {
 
     // MARK: Helper Types
 
-    fileprivate typealias ErrorReason = AFError.ResponseValidationFailureReason
+    fileprivate typealias ErrorReason = GDError.ResponseValidationFailureReason
 
     /// Used to represent whether validation was successful or encountered an error resulting in a failure.
     ///
@@ -80,7 +80,7 @@ extension Request {
             return .success
         } else {
             let reason: ErrorReason = .unacceptableStatusCode(code: response.statusCode)
-            return .failure(AFError.responseValidationFailed(reason: reason))
+            return .failure(GDError.responseValidationFailed(reason: reason))
         }
     }
 
@@ -105,9 +105,9 @@ extension Request {
                 }
             }
 
-            let error: AFError = {
+            let error: GDError = {
                 let reason: ErrorReason = .missingContentType(acceptableContentTypes: Array(acceptableContentTypes))
-                return AFError.responseValidationFailed(reason: reason)
+                return GDError.responseValidationFailed(reason: reason)
             }()
 
             return .failure(error)
@@ -119,13 +119,13 @@ extension Request {
             }
         }
 
-        let error: AFError = {
+        let error: GDError = {
             let reason: ErrorReason = .unacceptableContentType(
                 acceptableContentTypes: Array(acceptableContentTypes),
                 responseContentType: responseContentType
             )
 
-            return AFError.responseValidationFailed(reason: reason)
+            return GDError.responseValidationFailed(reason: reason)
         }()
 
         return .failure(error)
@@ -270,14 +270,14 @@ extension DownloadRequest {
             let fileURL = self.downloadDelegate.fileURL
 
             guard let validFileURL = fileURL else {
-                return .failure(AFError.responseValidationFailed(reason: .dataFileNil))
+                return .failure(GDError.responseValidationFailed(reason: .dataFileNil))
             }
 
             do {
                 let data = try Data(contentsOf: validFileURL)
                 return self.validate(contentType: acceptableContentTypes, response: response, data: data)
             } catch {
-                return .failure(AFError.responseValidationFailed(reason: .dataFileReadFailed(at: validFileURL)))
+                return .failure(GDError.responseValidationFailed(reason: .dataFileReadFailed(at: validFileURL)))
             }
         }
     }

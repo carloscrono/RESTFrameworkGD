@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "RESTFmwGD"
-  s.version      = "1.1"
+  s.version      = "1.2.1"
   s.summary      = "RESTFmwGD a simple HTTP gateway"
 
   # This description is used to generate tags and improve search results.
@@ -38,7 +38,7 @@ Pod::Spec.new do |s|
   #
 
   #s.license      = "MIT (example)"
-  s.license      = { :type => "MIT", :file => "Deployment/LICENSE" }
+  s.license      = { :type => "MIT", :file => "RESTFmwGD/Deployment/LICENSE" }
 
 
   # ――― Author Metadata  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -51,7 +51,7 @@ Pod::Spec.new do |s|
   #  profile URL.
   #
 
-  s.author             = { "Carlos Crono" => "carlos.crono@gmail.com" }
+  s.author             = { "Carlos Crono" => "carlos.crono@gmail.com"}
   # Or just: s.author    = "Carlos Crono"
   # s.authors            = { "Carlos Crono" => "carlos.crono@gmail.com" }
   # s.social_media_url   = "http://twitter.com/CarlosCrono"
@@ -78,7 +78,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/carloscrono/RESTFrameworkGD.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/carloscrono/RESTFrameworkGD.git", :branch => 'master', :tag => "#{s.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -89,7 +89,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "Classes", "Classes/**/*.{h,m,swift}"
+  s.source_files  = "RESTFmwGD/Classes", "RESTFmwGD/Classes/**/*.{h,m,swift}"
   s.exclude_files = "Classes/Exclude"
 
   # s.public_header_files = "Classes/**/*.h"

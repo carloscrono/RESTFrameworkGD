@@ -1,6 +1,0 @@
-framework module Pods_RESTFrameworkGD {
-  umbrella header "Pods-RESTFrameworkGD-umbrella.h"
-
-  export *
-  module * { export * }
-}

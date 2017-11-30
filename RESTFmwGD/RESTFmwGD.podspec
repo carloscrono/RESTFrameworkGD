@@ -90,7 +90,7 @@ Pod::Spec.new do |s|
   #
 
   s.source_files  = "RESTFmwGD/Classes", "RESTFmwGD/Classes/**/*.{h,m,swift}"
-  s.exclude_files = "Classes/Exclude"
+  s.exclude_files = "RESTFmwGD/Classes/KeyboardManagerSwift", "RESTFmwGD/Classes/KeyboardManager"
 
   # s.public_header_files = "Classes/**/*.h"
 

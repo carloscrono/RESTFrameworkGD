@@ -8,7 +8,7 @@
 import Foundation
 
 private func setValue(_ value: Any, map: Map) {
-	setValue(value, key: map.currentKey!, checkForNestedKeys: map.keyIsNested, delimiter: map.nestedKeyDelimiter, dictionary: &map.JSON)
+	setValue(value, key: map.currentKey!, checkForNestedKeys: map.keyIsNested, delimiter: map.nestedKeyDelimiter, dictionary: &map.json)
 }
 
 private func setValue(_ value: Any, key: String, checkForNestedKeys: Bool, delimiter: String, dictionary: inout [String : Any]) {
@@ -94,9 +94,9 @@ internal final class ToJSON {
 	}
 
 	class func objectArray<N: BaseMappable>(_ field: Array<N>, map: Map) {
-		let JSONObjects = Mapper(context: map.context, shouldIncludeNilValues: map.shouldIncludeNilValues).toJSONArray(field)
+		let jsonObjects = Mapper(context: map.context, shouldIncludeNilValues: map.shouldIncludeNilValues).toJSONArray(field)
 		
-		setValue(JSONObjects, map: map)
+		setValue(jsonObjects, map: map)
 	}
 	
 	class func optionalObjectArray<N: BaseMappable>(_ field: Array<N>?, map: Map) {
@@ -108,8 +108,8 @@ internal final class ToJSON {
 	class func twoDimensionalObjectArray<N: BaseMappable>(_ field: Array<Array<N>>, map: Map) {
 		var array = [[[String: Any]]]()
 		for innerArray in field {
-			let JSONObjects = Mapper(context: map.context, shouldIncludeNilValues: map.shouldIncludeNilValues).toJSONArray(innerArray)
-			array.append(JSONObjects)
+			let jsonObjects = Mapper(context: map.context, shouldIncludeNilValues: map.shouldIncludeNilValues).toJSONArray(innerArray)
+			array.append(jsonObjects)
 		}
 		setValue(array, map: map)
 	}
@@ -121,9 +121,9 @@ internal final class ToJSON {
 	}
 	
 	class func objectSet<N: BaseMappable>(_ field: Set<N>, map: Map) {
-		let JSONObjects = Mapper(context: map.context, shouldIncludeNilValues: map.shouldIncludeNilValues).toJSONSet(field)
+		let jsonObjects = Mapper(context: map.context, shouldIncludeNilValues: map.shouldIncludeNilValues).toJSONSet(field)
 		
-		setValue(JSONObjects, map: map)
+		setValue(jsonObjects, map: map)
 	}
 	
 	class func optionalObjectSet<N: BaseMappable>(_ field: Set<N>?, map: Map) {
@@ -133,9 +133,9 @@ internal final class ToJSON {
 	}
 	
 	class func objectDictionary<N: BaseMappable>(_ field: Dictionary<String, N>, map: Map) {
-		let JSONObjects = Mapper(context: map.context, shouldIncludeNilValues: map.shouldIncludeNilValues).toJSONDictionary(field)
+		let jsonObjects = Mapper(context: map.context, shouldIncludeNilValues: map.shouldIncludeNilValues).toJSONDictionary(field)
 		
-		setValue(JSONObjects, map: map)
+		setValue(jsonObjects, map: map)
 	}
 
 	class func optionalObjectDictionary<N: BaseMappable>(_ field: Dictionary<String, N>?, map: Map) {
@@ -145,9 +145,9 @@ internal final class ToJSON {
 	}
 
 	class func objectDictionaryOfArrays<N: BaseMappable>(_ field: Dictionary<String, [N]>, map: Map) {
-		let JSONObjects = Mapper(context: map.context, shouldIncludeNilValues: map.shouldIncludeNilValues).toJSONDictionaryOfArrays(field)
+		let jsonObjects = Mapper(context: map.context, shouldIncludeNilValues: map.shouldIncludeNilValues).toJSONDictionaryOfArrays(field)
 
-		setValue(JSONObjects, map: map)
+		setValue(jsonObjects, map: map)
 	}
 	
 	class func optionalObjectDictionaryOfArrays<N: BaseMappable>(_ field: Dictionary<String, [N]>?, map: Map) {

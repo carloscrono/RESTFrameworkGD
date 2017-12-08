@@ -24,7 +24,7 @@ extension DataRequest {
   }
   
   /// Utility function for checking for errors in response
-  internal static func checkResponseForError(request: URLRequest?, response: HTTPURLResponse?, data: Data?, error: Error?) -> Error? {
+  internal static func checkResponseForError(data: Data?, error: Error?) -> Error? {
     if let error = error {
       return error
     }
@@ -41,29 +41,29 @@ extension DataRequest {
     let jsonResponseSerializer = DataRequest.jsonResponseSerializer(options: .allowFragments)
     let result = jsonResponseSerializer.serializeResponse(request, response, data, nil)
     
-    let JSON: Any?
+    let jsonObject: Any?
     if let keyPath = keyPath , keyPath.isEmpty == false {
-      JSON = (result.value as AnyObject?)?.value(forKeyPath: keyPath)
+      jsonObject = (result.value as AnyObject?)?.value(forKeyPath: keyPath)
     } else {
-      JSON = result.value
+      jsonObject = result.value
     }
     
-    return JSON
+    return jsonObject
   }
   
   /// BaseMappable Object Serializer
-  public static func ObjectMapperSerializer<T: BaseMappable>(_ keyPath: String?, mapToObject object: T? = nil, context: MapContext? = nil) -> DataResponseSerializer<T> {
+  public static func objectMapperSerializer<T: BaseMappable>(_ keyPath: String?, mapToObject object: T? = nil, context: MapContext? = nil) -> DataResponseSerializer<T> {
     return DataResponseSerializer { request, response, data, error in
-      if let error = checkResponseForError(request: request, response: response, data: data, error: error){
+      if let error = checkResponseForError(data: data, error: error){
         return .failure(error)
       }
       
-      let JSONObject = processResponse(request: request, response: response, data: data, keyPath: keyPath)
+      let jsonObject = processResponse(request: request, response: response, data: data, keyPath: keyPath)
       
       if let object = object {
-        _ = Mapper<T>(context: context, shouldIncludeNilValues: false).map(JSONObject: JSONObject, toObject: object)
+        _ = Mapper<T>(context: context, shouldIncludeNilValues: false).map(jsonObject: jsonObject, toObject: object)
         return .success(object)
-      } else if let parsedObject = Mapper<T>(context: context, shouldIncludeNilValues: false).map(JSONObject: JSONObject){
+      } else if let parsedObject = Mapper<T>(context: context, shouldIncludeNilValues: false).map(jsonObject: jsonObject){
         return .success(parsedObject)
       }
       
@@ -74,16 +74,16 @@ extension DataRequest {
   }
   
   /// ImmutableMappable Array Serializer
-  public static func ObjectMapperImmutableSerializer<T: ImmutableMappable>(_ keyPath: String?, context: MapContext? = nil) -> DataResponseSerializer<T> {
+  public static func objectMapperImmutableSerializer<T: ImmutableMappable>(_ keyPath: String?, context: MapContext? = nil) -> DataResponseSerializer<T> {
     return DataResponseSerializer { request, response, data, error in
-      if let error = checkResponseForError(request: request, response: response, data: data, error: error){
+      if let error = checkResponseForError(data: data, error: error){
         return .failure(error)
       }
       
-      let JSONObject = processResponse(request: request, response: response, data: data, keyPath: keyPath)
+      let jsonObject = processResponse(request: request, response: response, data: data, keyPath: keyPath)
       
-      if let JSONObject = JSONObject,
-        let parsedObject = (try? Mapper<T>(context: context, shouldIncludeNilValues: false).map(JSONObject: JSONObject)){
+      if let jsonObject = jsonObject,
+        let parsedObject = (try? Mapper<T>(context: context, shouldIncludeNilValues: false).map(jsonObject: jsonObject)){
         return .success(parsedObject)
       }
       
@@ -105,24 +105,24 @@ extension DataRequest {
    */
   @discardableResult
   public func responseObject<T: BaseMappable>(queue: DispatchQueue? = nil, keyPath: String? = nil, mapToObject object: T? = nil, context: MapContext? = nil, completionHandler: @escaping (DataResponse<T>) -> Void) -> Self {
-    return response(queue: queue, responseSerializer: DataRequest.ObjectMapperSerializer(keyPath, mapToObject: object, context: context), completionHandler: completionHandler)
+    return response(queue: queue, responseSerializer: DataRequest.objectMapperSerializer(keyPath, mapToObject: object, context: context), completionHandler: completionHandler)
   }
   
   @discardableResult
-  public func responseObject<T: ImmutableMappable>(queue: DispatchQueue? = nil, keyPath: String? = nil, mapToObject object: T? = nil, context: MapContext? = nil, completionHandler: @escaping (DataResponse<T>) -> Void) -> Self {
-    return response(queue: queue, responseSerializer: DataRequest.ObjectMapperImmutableSerializer(keyPath, context: context), completionHandler: completionHandler)
+  public func responseObject<T: ImmutableMappable>(queue: DispatchQueue? = nil, keyPath: String? = nil, context: MapContext? = nil, completionHandler: @escaping (DataResponse<T>) -> Void) -> Self {
+    return response(queue: queue, responseSerializer: DataRequest.objectMapperImmutableSerializer(keyPath, context: context), completionHandler: completionHandler)
   }
   
   /// BaseMappable Array Serializer
-  public static func ObjectMapperArraySerializer<T: BaseMappable>(_ keyPath: String?, context: MapContext? = nil) -> DataResponseSerializer<[T]> {
+  public static func objectMapperArraySerializer<T: BaseMappable>(_ keyPath: String?, context: MapContext? = nil) -> DataResponseSerializer<[T]> {
     return DataResponseSerializer { request, response, data, error in
-      if let error = checkResponseForError(request: request, response: response, data: data, error: error){
+      if let error = checkResponseForError(data: data, error: error){
         return .failure(error)
       }
       
-      let JSONObject = processResponse(request: request, response: response, data: data, keyPath: keyPath)
+      let jsonObject = processResponse(request: request, response: response, data: data, keyPath: keyPath)
       
-      if let parsedObject = Mapper<T>(context: context, shouldIncludeNilValues: false).mapArray(JSONObject: JSONObject){
+      if let parsedObject = Mapper<T>(context: context, shouldIncludeNilValues: false).mapArray(jsonObject: jsonObject){
         return .success(parsedObject)
       }
       
@@ -133,17 +133,16 @@ extension DataRequest {
   }
   
   /// ImmutableMappable Array Serializer
-  public static func ObjectMapperImmutableArraySerializer<T: ImmutableMappable>(_ keyPath: String?, context: MapContext? = nil) -> DataResponseSerializer<[T]> {
+  public static func objectMapperImmutableArraySerializer<T: ImmutableMappable>(_ keyPath: String?, context: MapContext? = nil) -> DataResponseSerializer<[T]> {
     return DataResponseSerializer { request, response, data, error in
-      if let error = checkResponseForError(request: request, response: response, data: data, error: error){
+      if let error = checkResponseForError(data: data, error: error){
         return .failure(error)
       }
       
-      if let JSONObject = processResponse(request: request, response: response, data: data, keyPath: keyPath){
+      if let jsonObject = processResponse(request: request, response: response, data: data, keyPath: keyPath), let parsedObject = try? Mapper<T>(context: context, shouldIncludeNilValues: false).mapArray(jsonObject: jsonObject){
         
-        if let parsedObject = try? Mapper<T>(context: context, shouldIncludeNilValues: false).mapArray(JSONObject: JSONObject){
-          return .success(parsedObject)
-        }
+        return .success(parsedObject)
+        
       }
       
       let failureReason = "ObjectMapper failed to serialize response."
@@ -163,7 +162,7 @@ extension DataRequest {
    */
   @discardableResult
   public func responseArray<T: BaseMappable>(queue: DispatchQueue? = nil, keyPath: String? = nil, context: MapContext? = nil, completionHandler: @escaping (DataResponse<[T]>) -> Void) -> Self {
-    return response(queue: queue, responseSerializer: DataRequest.ObjectMapperArraySerializer(keyPath, context: context), completionHandler: completionHandler)
+    return response(queue: queue, responseSerializer: DataRequest.objectMapperArraySerializer(keyPath, context: context), completionHandler: completionHandler)
   }
   
   /**
@@ -177,6 +176,7 @@ extension DataRequest {
    */
   @discardableResult
   public func responseArray<T: ImmutableMappable>(queue: DispatchQueue? = nil, keyPath: String? = nil, context: MapContext? = nil, completionHandler: @escaping (DataResponse<[T]>) -> Void) -> Self {
-    return response(queue: queue, responseSerializer: DataRequest.ObjectMapperImmutableArraySerializer(keyPath, context: context), completionHandler: completionHandler)
+    return response(queue: queue, responseSerializer: DataRequest.objectMapperImmutableArraySerializer(keyPath, context: context), completionHandler: completionHandler)
   }
 }
+

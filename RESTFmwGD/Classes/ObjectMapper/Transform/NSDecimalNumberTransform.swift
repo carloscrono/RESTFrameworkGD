@@ -11,7 +11,9 @@ open class NSDecimalNumberTransform: TransformType {
     public typealias Object = NSDecimalNumber
     public typealias JSON = String
 
-    public init() {}
+    public init() {
+      // Intentionally unimplemented...
+    }
 
     open func transformFromJSON(_ value: Any?) -> NSDecimalNumber? {
         if let string = value as? String {

@@ -11,7 +11,9 @@ open class DataTransform: TransformType {
 	public typealias Object = Data
 	public typealias JSON = String
 	
-	public init() {}
+	public init() {
+    // Intentionally unimplemented...
+  }
 	
 	open func transformFromJSON(_ value: Any?) -> Data? {
 		guard let string = value as? String else{

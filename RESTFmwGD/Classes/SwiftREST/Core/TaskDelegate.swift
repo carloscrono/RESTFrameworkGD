@@ -440,7 +440,9 @@ class UploadTaskDelegate: DataTaskDelegate {
     totalBytesSent: Int64,
     totalBytesExpectedToSend: Int64)
   {
-    if initialResponseTime == nil { initialResponseTime = CFAbsoluteTimeGetCurrent() }
+    if initialResponseTime == nil {
+      initialResponseTime = CFAbsoluteTimeGetCurrent()
+    }
     
     if let taskDidSendBodyData = taskDidSendBodyData {
       taskDidSendBodyData(session, task, bytesSent, totalBytesSent, totalBytesExpectedToSend)

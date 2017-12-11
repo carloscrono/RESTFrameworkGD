@@ -25,21 +25,21 @@ open class URLTransform: TransformType {
 	}
 
 	open func transformFromJSON(_ value: Any?) -> URL? {
-		guard let URLString = value as? String else { return nil }
+		guard let urlString = value as? String else { return nil }
 		
 		if !shouldEncodeURLString {
-			return URL(string: URLString)
+			return URL(string: urlString)
 		}
 
-		guard let escapedURLString = URLString.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet) else {
+		guard let escapedURLString = urlString.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet) else {
 			return nil
 		}
 		return URL(string: escapedURLString)
 	}
 
 	open func transformToJSON(_ value: URL?) -> String? {
-		if let URL = value {
-			return URL.absoluteString
+		if let url = value {
+			return url.absoluteString
 		}
 		return nil
 	}

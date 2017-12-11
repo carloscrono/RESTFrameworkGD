@@ -19,17 +19,17 @@ public extension ImmutableMappable {
   
   /// Initializes object from a JSON String
   public init(jsonString: String, context: MapContext? = nil) throws {
-    self = (try Mapper(context: context).map(jsonString: jsonString))!
+    self = (Mapper(context: context).map(jsonString: jsonString))!
   }
   
   /// Initializes object from a JSON Dictionary
   public init(json: [String: Any], context: MapContext? = nil) throws {
-    self = (try Mapper(context: context).map(json: json))!
+    self = (Mapper(context: context).map(json: json))!
   }
   
   /// Initializes object from a JSONObject
   public init(jsonObject: Any, context: MapContext? = nil) throws {
-    self = (try Mapper(context: context).map(jsonObject: jsonObject))!
+    self = (Mapper(context: context).map(jsonObject: jsonObject))!
   }
   
 }
@@ -204,7 +204,7 @@ public extension Mapper where N: ImmutableMappable {
       throw MapError(key: nil, currentValue: jsonString, reason: "Cannot convert string into Any'")
     }
     
-    return (try mapArray(jsonObject: jsonObject))!
+    return (mapArray(jsonObject: jsonObject))!
   }
   
   public func mapArray(jsonObject: Any) throws -> [N] {
@@ -222,7 +222,7 @@ public extension Mapper where N: ImmutableMappable {
       throw MapError(key: nil, currentValue: jsonString, reason: "Cannot convert string into Any'")
     }
     
-    return (try mapDictionary(jsonObject: jsonObject))!
+    return (mapDictionary(jsonObject: jsonObject))!
   }
   
   public func mapDictionary(jsonObject: Any?) throws -> [String: N] {
@@ -230,7 +230,7 @@ public extension Mapper where N: ImmutableMappable {
       throw MapError(key: nil, currentValue: jsonObject, reason: "Cannot cast to '[String: [String: Any]]''")
     }
     
-    return (try mapDictionary(json: json))!
+    return (mapDictionary(json: json))!
   }
   
   public func mapDictionary(json: [String: [String: Any]]) throws -> [String: N] {

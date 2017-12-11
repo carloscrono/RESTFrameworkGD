@@ -8,6 +8,8 @@
 
 .DS_Store
 
+.scannerwork/**
+
 ## Build generated
 build/
 DerivedData/

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		46A67BE8D1ADDE589967BFB8 /* Pods_RESTFmwGDTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB1C110F91467D0763ECA88 /* Pods_RESTFmwGDTests.framework */; };
 		A3366AAA1FCEB5EB00ED7E74 /* RESTFmwGD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3366AA01FCEB5EB00ED7E74 /* RESTFmwGD.framework */; };
 		A3366AAF1FCEB5EB00ED7E74 /* RESTFmwGDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3366AAE1FCEB5EB00ED7E74 /* RESTFmwGDTests.swift */; };
 		A3366AB11FCEB5EB00ED7E74 /* RESTFmwGD.h in Headers */ = {isa = PBXBuildFile; fileRef = A3366AA31FCEB5EB00ED7E74 /* RESTFmwGD.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -54,7 +53,6 @@
 		A3366B181FCEB70100ED7E74 /* ServerTrustPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3366AEE1FCEB70000ED7E74 /* ServerTrustPolicy.swift */; };
 		A3366B191FCEB70100ED7E74 /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3366AEF1FCEB70000ED7E74 /* Timeline.swift */; };
 		A3366B1A1FCEB70100ED7E74 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3366AF01FCEB70000ED7E74 /* Validation.swift */; };
-		B565DED0B42744566BDA504A /* Pods_RESTFmwGD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29BC2F515FA4E229B7C8F9B6 /* Pods_RESTFmwGD.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,7 +66,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		29BC2F515FA4E229B7C8F9B6 /* Pods_RESTFmwGD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RESTFmwGD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4114F9DC9286129CB9475C6B /* Pods-RESTFmwGDTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RESTFmwGDTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RESTFmwGDTests/Pods-RESTFmwGDTests.release.xcconfig"; sourceTree = "<group>"; };
 		412F7B35CEF8E60A207DB8B5 /* Pods-RESTFmwGDTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RESTFmwGDTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RESTFmwGDTests/Pods-RESTFmwGDTests.debug.xcconfig"; sourceTree = "<group>"; };
 		483CE3293D0822707ED07C97 /* Pods-RESTFmwGD.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RESTFmwGD.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RESTFmwGD/Pods-RESTFmwGD.debug.xcconfig"; sourceTree = "<group>"; };
@@ -122,7 +119,6 @@
 		A3366AEE1FCEB70000ED7E74 /* ServerTrustPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerTrustPolicy.swift; sourceTree = "<group>"; };
 		A3366AEF1FCEB70000ED7E74 /* Timeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
 		A3366AF01FCEB70000ED7E74 /* Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
-		CFB1C110F91467D0763ECA88 /* Pods_RESTFmwGDTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RESTFmwGDTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,7 +126,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B565DED0B42744566BDA504A /* Pods_RESTFmwGD.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,7 +134,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3366AAA1FCEB5EB00ED7E74 /* RESTFmwGD.framework in Frameworks */,
-				46A67BE8D1ADDE589967BFB8 /* Pods_RESTFmwGDTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,8 +312,6 @@
 		F3B387606945F05F94BD99BB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				29BC2F515FA4E229B7C8F9B6 /* Pods_RESTFmwGD.framework */,
-				CFB1C110F91467D0763ECA88 /* Pods_RESTFmwGDTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -719,7 +711,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = UFY3VDA4Y2;
+				DEVELOPMENT_TEAM = 827P8UQ426;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -742,7 +734,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = UFY3VDA4Y2;
+				DEVELOPMENT_TEAM = 827P8UQ426;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";

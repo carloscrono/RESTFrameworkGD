@@ -482,7 +482,6 @@ open class SessionManager {
       multipartFormData(formData)
       
       let tempFileURL: URL? = urlRequest.urlRequest?.url
-      
       do {
         var urlRequestWithContentType = try urlRequest.asURLRequest()
         urlRequestWithContentType.setValue(formData.contentType, forHTTPHeaderField: "Content-Type")
@@ -508,7 +507,7 @@ open class SessionManager {
           do {
             try FileManager.default.removeItem(at: tempFileURL)
           } catch {
-            // No-op
+            // No-optional
           }
         }
         

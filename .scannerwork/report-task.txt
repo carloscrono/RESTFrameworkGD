@@ -3,5 +3,5 @@ projectKey=RESTFmwGD
 serverUrl=https://sonarcloud.io
 serverVersion=6.7.0.33301
 dashboardUrl=https://sonarcloud.io/dashboard/index/RESTFmwGD
-ceTaskId=AWA879groETz9fUAFOHv
-ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AWA879groETz9fUAFOHv
+ceTaskId=AWBGh1EQoETz9fUAFPCV
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AWBGh1EQoETz9fUAFPCV

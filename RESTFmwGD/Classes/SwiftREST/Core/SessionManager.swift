@@ -481,7 +481,7 @@ open class SessionManager {
       let formData = MultipartFormData()
       multipartFormData(formData)
       
-      let tempFileURL: URL? = URL(string: "http://localhost")
+      let tempFileURL: URL? = urlRequest.urlRequest?.url
       
       do {
         var urlRequestWithContentType = try urlRequest.asURLRequest()

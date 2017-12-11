@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "RESTFmwGD"
-  s.version      = "1.4.1"
+  s.version      = "1.4.2"
   s.summary      = "RESTFmwGD a simple HTTP gateway"
 
   # This description is used to generate tags and improve search results.
